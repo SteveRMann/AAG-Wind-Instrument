@@ -36,7 +36,7 @@
 const int CHIPSELECT = D8;
 const uint8_t ONE_WIRE_PIN = D4;        // 1-Wire network
 
-Ticker tickr;
+Ticker tickr1;
 
 
 // Address of the DS2423 counter
@@ -51,35 +51,6 @@ int speedRaw = 0;           //The difference
 char buffer[20];
 
 
-void readRaw() {
-  // Take a reading of the counter then
-  // subtract the prior to get the speedRaw
-  ds2423.update();
-  if (ds2423.isError()) {
-    Serial.println("Error reading counter");
-  } else {
-    Serial.print("rawSpeed = ");
-    //Serial.println(ds2423.getCount());
-    countRaw = ds2423.getCount();
-    speedRaw = countRaw - countPrior;
-    countPrior = countRaw;
-    Serial.println(speedRaw);
-    writeSD();
-  }
-}
-
-
-//Temp for testing the SD card writes
-void readA0() {
-  int sensor = analogRead(A0);
-  itoa(sensor, buffer, 10);
-  //dataString += String(sensor);
-  //Serial.print("dataString= ");
-  //Serial.println(dataString);
-  Serial.println(buffer);
-}
-
-
 
 
 //======================= setup() ===============================
@@ -92,7 +63,7 @@ void setup() {
 
   Serial.print("Initializing SD card...");
 
-  // see if the card is present and can be initialized:
+  // See if the card is present and can be initialized:
   if (!SD.begin(CHIPSELECT)) {
     Serial.println("SD Card failed, or not present");
     // don't do anything more:
@@ -104,8 +75,8 @@ void setup() {
 
 
   // Read the counter every 10.0s
-  tickr.attach(10.0, readRaw);
-  //tickr.attach(1.0, readA0);      //Temp for testing the SD card writes
+  tickr1.attach(10.0, readWindspeed);
+  
 }
 
 
@@ -114,11 +85,12 @@ void setup() {
 
 //======================= loop() ===============================
 void loop() {
-
 }
 
 
 
+
+//======================= writeSD() ===============================
 void writeSD() {
   File dataFile = SD.open("datalog.txt", FILE_WRITE);
   if (dataFile) {
@@ -126,5 +98,29 @@ void writeSD() {
     dataFile.close();
   } else {
     Serial.println("error opening datalog.txt");
+  }
+}
+
+
+
+//======================= readWindspeed() ===============================
+void readWindspeed() {
+  // Take a reading of the DS2423 counter then
+  // subtract the prior to get the speedRaw
+  // speedRaw is the number of counts since the prior reading.
+  //
+  ds2423.update();
+  if (ds2423.isError()) {
+    Serial.println("Error reading counter");
+  } else {
+    Serial.print("rawSpeed = ");
+    //Serial.println(ds2423.getCount());
+    countRaw = ds2423.getCount();
+    speedRaw = countRaw - countPrior;
+    countPrior = countRaw;
+    Serial.println(speedRaw);
+    writeSD();
+
+//    map(value, fromLow, fromHigh, toLow, toHigh);
   }
 }
