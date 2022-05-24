@@ -4,7 +4,8 @@ The schematic that I found is almost exactly the same as my device and was enoug
 
 I also found Arduino libraries for the three DS devices on the PCB at https://github.com/jbechter.
 
-![image](https://user-images.githubusercontent.com/8091425/170115769-903989b6-4841-44ed-84b2-c39b4a8bbddd.jpg)
+<img src="[https://github.com/favicon.ico](https://github.com/SteveRMann/AAG-Wind-Instrument/blob/main/image.jpg)" width="48">
+
 
 ## Versions
 (From http://sheepdogsoftware.co.uk/sc3wmw.htm#gotoVer)
