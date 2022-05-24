@@ -4,6 +4,8 @@ The schematic that I found is almost exactly the same as my device and was enoug
 
 I also found Arduino libraries for the three DS devices on the PCB at https://github.com/jbechter.
 
+![image](https://user-images.githubusercontent.com/8091425/170115769-903989b6-4841-44ed-84b2-c39b4a8bbddd.jpg)
+
 ## Versions
 (From http://sheepdogsoftware.co.uk/sc3wmw.htm#gotoVer)
 The wind speed/ direction sensor is "Version 3". Earlier versions used different electronics for sensing the wind direction and You can tell one from the other by
@@ -34,6 +36,6 @@ This example demonstrates the use of the DS2450 library and the Arduino
 OneWire library to read wind vane direction from a Dallas Semiconductor DS2450
 quad a/d in an AAG wind vane.
 
-![image](https://user-images.githubusercontent.com/8091425/170115769-903989b6-4841-44ed-84b2-c39b4a8bbddd.jpg)
+
 
 ![Schematic](https://user-images.githubusercontent.com/8091425/170117819-a2d5b2f6-9e48-4b12-897f-a5d291664eb4.jpg)
