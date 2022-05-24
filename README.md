@@ -2,16 +2,16 @@
 I acquired a brand new AAG Wind Instrument that had virtually no documentation.   Most of the links on the web were broken, so I had little to go on.
 The schematic that I found is almost exactly the same as my device and was enough information to get started.
 
-I also found Arduino libraries for the three DS devices on the PCB.
+I also found Arduino libraries for the three DS devices on the PCB at https://github.com/jbechter.
 
-##Versions
+## Versions
 (From http://sheepdogsoftware.co.uk/sc3wmw.htm#gotoVer)
 The wind speed/ direction sensor is "Version 3". Earlier versions used different electronics for sensing the wind direction and You can tell one from the other by
 --the markings on the PCB:"Ceprei version 2" (Yes: two)
 or
 --By using an i2c Scanner. If there is a DS2450 (ID ends hex 20), the device is version 3.
 
-##Getting Chip ID's
+## Getting Chip ID's
 Each 1-wire chip has it's own unique 64-bit serial number. The program needs to know the serial numbers. I wrote an Arduino sketch "one_wire_address_finder" which revelaled three DS chips on the 1-wire network. 
 The DS2450 (1-Wire Quad A/D Converter) handles the wind direction
 The DS18S20 (1-Wire Temperature Digital Serial Sensor) provides the temperature. (Works just like an 18B20, but 4X the cost).
