@@ -26,17 +26,5 @@ Sketch: *one_wire_address_finder* found these chips on my instrument:
 - address : 0x1DF6F90000000056  //DS2423 (4Kb NV RAM memory with external counters)
 
 
-
-
-
-## DS2450_Direction
-Original code: https://github.com/jbechter/arduino-onewire-DS2450
-
-
-This example demonstrates the use of the DS2450 library and the Arduino
-OneWire library to read wind vane direction from a Dallas Semiconductor DS2450
-quad a/d in an AAG wind vane.
-
-
-
 ![Schematic](https://user-images.githubusercontent.com/8091425/170117819-a2d5b2f6-9e48-4b12-897f-a5d291664eb4.jpg)
+
