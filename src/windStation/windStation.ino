@@ -15,13 +15,24 @@
 
 #include <Arduino.h>
 #include <OneWire.h>
-#include <Ticker.h>
+#include <TickTwo.h>
 
 
-const uint8_t ONE_WIRE_PIN = D4;        // 1-Wire network
-OneWire oneWire(ONE_WIRE_PIN);
-Ticker tickr1;
-Ticker tickr2;
+//----- Prototypes (Must precede TickTwo timers -----
+// Must preceed ticker calls.
+void readWindDirection();
+void readWindSpeed();
+void wsTemperature(void);
+
+TickTwo timer1(readWindSpeed, 10000);       //Get windspeed every ten seconds
+TickTwo timer2(readWindDirection, 5000);    //Get wind direction every 5 seconds
+TickTwo timer3(wsTemperature, 5000);        //Call myTemperature() every 5,000 ms.
+
+
+
+//const uint8_t ONE_WIRE_BUS = D4;        // 1-Wire network
+#define ONE_WIRE_BUS D4
+OneWire oneWire(ONE_WIRE_BUS);
 
 
 
@@ -33,8 +44,8 @@ uint8_t DS2423_address[] = { 0x1D, 0xF6, 0xF9, 0x00, 0x00, 0x00, 0x00, 0x56 };
 DS2423 ds2423(&oneWire, DS2423_address);
 
 //Wind speed globals
-int windSpeed = 0;          //The mapped wind speed
-bool windSpeedFlag = true;  //Flag true with new reading
+uint32_t windSpeed = 0;           //The mapped wind speed
+bool windSpeedFlag = false;       //Flag true with new reading
 
 
 
@@ -81,8 +92,23 @@ const char directions[17][4] = {
 bool windDirectionFlag = false;  //Flag true with new reading
 int direction = 16;
 
-OneWire ow(ONE_WIRE_PIN);
+OneWire ow(ONE_WIRE_BUS);
 DS2450 ds2450(&ow, DS2450_address);
+
+
+//--------------------------- Temperature ------------------------------------
+#include <DallasTemperature.h>
+
+// Pass our oneWire reference to Dallas Temperature library
+DallasTemperature wsDS18b20(&oneWire);
+
+// Address of the DS18B20 in the AAG Windstation
+DeviceAddress windStation = {0x10, 0x74, 0x4E, 0x1B, 0x00, 0x08, 0x00, 0x2E};
+
+float tempC;
+float tempF;
+bool temperatureFlag = false;  //Flag true with new reading
+
 
 
 
@@ -92,33 +118,69 @@ void setup() {
   Serial.println();
   Serial.println();
   Serial.println(SKETCH);
-  ds2423.begin();       // Speed
-  ds2450.begin();       // Direction
+  ds2423.begin();       //Speed
+  ds2450.begin();       //Direction
+  wsDS18b20.begin();      //Temperature
 
-  // Read the counter every 10.0s
-  tickr1.attach(10.0, readWindSpeed);
-  tickr2.attach(5.0, readWindDirection);
+  /*
+    // Temperature debug stuff
+    Serial.print("Found ");
+    Serial.print(wsDS18b20.getDeviceCount(), DEC);
+    Serial.println(" devices.");
+    Serial.print("Parasite power is: ");
+    if (wsDS18b20.isParasitePowerMode()) Serial.println("ON");
+    else Serial.println("OFF");
+    Serial.print("windStation Address: ");
+    printAddress(windStation);
+    Serial.println();
+  */
+
+  // set the resolution to 9 bit (Each Dallas/Maxim device is capable of several different resolutions)
+  wsDS18b20.setResolution(windStation, 9);
+
+  /*
+    // Temperature debug stuff
+    Serial.print("Device Resolution: ");
+    Serial.print(wsDS18b20.getResolution(windStation), DEC);
+    Serial.println();
+  */
+
+  //Start the TickTwo timers
+  timer1.start();
+  timer2.start();
+  timer3.start();
 
   //Get initial values
   readWindSpeed();
   readWindDirection();
+  wsTemperature();
 }
 
 
 
 //======================= loop() ===============================
 void loop() {
-  char buffer[20];
+  timer1.update(); 
+  timer2.update(); 
+  timer3.update(); 
+  
+  char buffer[50];
   if (windSpeedFlag) {
     windSpeedFlag = false;
     if (windSpeed < 120) {
-      snprintf(buffer, sizeof(buffer), "%d MPH,\t%s", windSpeed, directions[direction]);
+      snprintf(buffer, sizeof(buffer), "%.2f°C, %.2f°F, %d MPH, %s", tempC, tempF, windSpeed, directions[direction]);
       Serial.println(buffer);
     }
   }
   if (windDirectionFlag) {
     windDirectionFlag = false;
-    snprintf(buffer, sizeof(buffer), "%d MPH,\t%s", windSpeed, directions[direction]);
+      snprintf(buffer, sizeof(buffer), "%.2f°C, %.2f°F, %d MPH, %s", tempC, tempF, windSpeed, directions[direction]);
     Serial.println(buffer);
   }
+    if (temperatureFlag) {
+    temperatureFlag = false;
+      snprintf(buffer, sizeof(buffer), "%.2f°C, %.2f°F, %d MPH, %s", tempC, tempF, windSpeed, directions[direction]);
+    Serial.println(buffer);
+  }
+
 }

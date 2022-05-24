@@ -7,7 +7,7 @@ void readWindSpeed() {
   //
   uint32_t countRaw = 0;      //The raw count from the DS2423
   static uint32_t countPrior = 0;    //The raw count from the last read
-  int speedRaw = 0;           //The difference
+  uint32_t speedRaw = 0;           //The difference
 
   ds2423.update();
   if (ds2423.isError()) {
@@ -18,6 +18,9 @@ void readWindSpeed() {
     countPrior = countRaw;
     //Serial.print("speedRaw= ");
     //Serial.println(speedRaw);
+    if (speedRaw > 120) {
+      speedRaw = 0;
+    }
     windSpeed = speedRaw;
     map(windSpeed, 0, 88, 0, 100);
     windSpeedFlag = true;
