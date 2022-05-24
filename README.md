@@ -17,10 +17,10 @@ The DS2450 (1-Wire Quad A/D Converter) handles the wind direction
 The DS18S20 (1-Wire Temperature Digital Serial Sensor) provides the temperature. (Works just like an 18B20, but 4X the cost).
 And the DS2423 (4kbit 1-Wire RAM with Counter) determines the wind speed.
 
-Sketch: one_wire_address_finder
-address : 0x2027BF00000000FC  //DS2450 4-channel (ADC, A/D converter)
-address : 0x10744E1B0008002E  //DS1920, DS1820, DS18S20 (Temperature with alarm trips)
-address : 0x1DF6F90000000056  //DS2423 (4Kb NV RAM memory with external counters)
+Sketch: *one_wire_address_finder* found these chips on my instrument:
+- address : 0x2027BF00000000FC  //DS2450 4-channel (ADC, A/D converter)
+- address : 0x10744E1B0008002E  //DS1920, DS1820, DS18S20 (Temperature with alarm trips)
+- address : 0x1DF6F90000000056  //DS2423 (4Kb NV RAM memory with external counters)
 
 
 
