@@ -28,6 +28,8 @@ Sketch: *one_wire_address_finder* found these chips on my instrument:
 
 ![Schematic](https://user-images.githubusercontent.com/8091425/170117819-a2d5b2f6-9e48-4b12-897f-a5d291664eb4.jpg)
 
+The green wire is the 1-wire bus, the red wire is ground.
+
 ## DS2450
 ### Wind Direction
 The version 3 AAG wind direction sensor implements a delightfully clever way to encode the shaft's position.
