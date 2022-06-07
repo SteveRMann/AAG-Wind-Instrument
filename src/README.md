@@ -11,6 +11,10 @@ This sketch uses the DS2423 counter chip to read a counter value from a Dallas S
 ### Datalogger
 Writing data to an SD card. Was to be part of the DS2423WindSpeedCalibration program.
 
+### DHT22 ###
+This sketch uses the DHT22 for temperature and humidity.
+It is a bit more accurate than the 20 year old HIH4030
+
 ### DS2423WindSpeedCalibration
 This sketch was used to get the accumulated count from the DS2423 over ten second windows.  The data was continuously displayed over the COM port.  While driving around the neighborhood, the count was correlated with the auto speed.  As expected, the count/speed line was linear, so a simple map function in the code provides the wind speed.
 
