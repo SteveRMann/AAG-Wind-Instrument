@@ -11,6 +11,10 @@ This sketch uses the DS2423 counter chip to read a counter value from a Dallas S
 ### Datalogger
 Writing data to an SD card. Was to be part of the DS2423WindSpeedCalibration program.
 
+### DHT11 ###
+This sketch uses the DHT11 for temperature and humidity.
+The accuracy is close to the desktop temperature/humidity instrument.
+
 ### DHT22 ###
 This sketch uses the DHT22 for temperature and humidity.
 It is a bit more accurate than the 20 year old HIH4030
