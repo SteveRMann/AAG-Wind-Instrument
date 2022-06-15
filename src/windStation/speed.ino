@@ -22,7 +22,7 @@ void readWindSpeed() {
       speedRaw = 0;
     }
     windSpeed = speedRaw;
-    map(windSpeed, 0, 88, 0, 100);
+    map(windSpeed, 0, 88, 0, 100);    //Calibration
     windSpeedFlag = true;
   }
 }

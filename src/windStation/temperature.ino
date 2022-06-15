@@ -1,4 +1,4 @@
-
+/*
 //========================== Read the temperature ==========================
 // Returns globals tempC and tempF
 void wsTemperature() {
@@ -40,3 +40,4 @@ void printAddress(DeviceAddress deviceAddress)
     Serial.print(deviceAddress[i], HEX);
   }
 }
+*/

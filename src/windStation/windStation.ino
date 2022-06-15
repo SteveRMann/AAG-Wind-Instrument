@@ -8,25 +8,34 @@
      This function reads the wind vane direction from a
      DS2450 quad a/d in an AAG wind vane.
 
+     Wind Speed and Wind Direction data is on a one-wire bus (D4).
+
      Temperature
-     There is a DS18S20 on the AAG Wind Station PCB.
+     Humidity and temperature are from a DHT11 on D1
 
 */
+
 
 #include <Arduino.h>
 #include <OneWire.h>
 #include <TickTwo.h>
+
+//Global variables
+byte celsius = 0;
+byte fahrenheit = 0;
+byte humidity = 0;
+
 
 
 //----- Prototypes (Must precede TickTwo timers -----
 // Must preceed ticker calls.
 void readWindDirection();
 void readWindSpeed();
-void wsTemperature(void);
+void readDht11();
 
 TickTwo timer1(readWindSpeed, 10000);       //Get windspeed every ten seconds
-TickTwo timer2(readWindDirection, 5000);    //Get wind direction every 5 seconds
-TickTwo timer3(wsTemperature, 5000);        //Call myTemperature() every 5,000 ms.
+TickTwo timer2(readWindDirection, 1000);    //Get wind direction every 1 second
+TickTwo timer3(readDht11, 15000);            //Call myTemperature() every 15,000 ms.
 
 
 
@@ -97,17 +106,11 @@ DS2450 ds2450(&ow, DS2450_address);
 
 
 //--------------------------- Temperature ------------------------------------
-#include <DallasTemperature.h>
-
-// Pass our oneWire reference to Dallas Temperature library
-DallasTemperature wsDS18b20(&oneWire);
-
-// Address of the DS18B20 in the AAG Windstation
-DeviceAddress windStation = {0x10, 0x74, 0x4E, 0x1B, 0x00, 0x08, 0x00, 0x2E};
-
-float tempC;
-float tempF;
+#include <SimpleDHT.h>
+int pinDHT11 = D1;
+SimpleDHT11 dht11(pinDHT11);
 bool temperatureFlag = false;  //Flag true with new reading
+
 
 
 
@@ -120,30 +123,8 @@ void setup() {
   Serial.println(SKETCH);
   ds2423.begin();       //Speed
   ds2450.begin();       //Direction
-  wsDS18b20.begin();      //Temperature
 
-  /*
-    // Temperature debug stuff
-    Serial.print("Found ");
-    Serial.print(wsDS18b20.getDeviceCount(), DEC);
-    Serial.println(" devices.");
-    Serial.print("Parasite power is: ");
-    if (wsDS18b20.isParasitePowerMode()) Serial.println("ON");
-    else Serial.println("OFF");
-    Serial.print("windStation Address: ");
-    printAddress(windStation);
-    Serial.println();
-  */
 
-  // set the resolution to 9 bit (Each Dallas/Maxim device is capable of several different resolutions)
-  wsDS18b20.setResolution(windStation, 9);
-
-  /*
-    // Temperature debug stuff
-    Serial.print("Device Resolution: ");
-    Serial.print(wsDS18b20.getResolution(windStation), DEC);
-    Serial.println();
-  */
 
   //Start the TickTwo timers
   timer1.start();
@@ -153,33 +134,38 @@ void setup() {
   //Get initial values
   readWindSpeed();
   readWindDirection();
-  wsTemperature();
+  readDht11();          //Temperature and humidity
+
 }
+
 
 
 
 //======================= loop() ===============================
 void loop() {
-  timer1.update(); 
-  timer2.update(); 
-  timer3.update(); 
-  
+  timer1.update();
+  timer2.update();
+  timer3.update();
+
+
   char buffer[50];
   if (windSpeedFlag) {
     windSpeedFlag = false;
     if (windSpeed < 120) {
-      snprintf(buffer, sizeof(buffer), "%.2f°C, %.2f°F, %d MPH, %s", tempC, tempF, windSpeed, directions[direction]);
+      snprintf(buffer, sizeof(buffer), "%d°C, %d°F, %d%%, %d MPH, %s", celsius, fahrenheit, humidity, windSpeed, directions[direction]);
       Serial.println(buffer);
     }
   }
+
   if (windDirectionFlag) {
     windDirectionFlag = false;
-      snprintf(buffer, sizeof(buffer), "%.2f°C, %.2f°F, %d MPH, %s", tempC, tempF, windSpeed, directions[direction]);
+    snprintf(buffer, sizeof(buffer), "%d°C, %d°F, %d%%, %d MPH, %s", celsius, fahrenheit, humidity, windSpeed, directions[direction]);
     Serial.println(buffer);
   }
-    if (temperatureFlag) {
+
+  if (temperatureFlag) {
     temperatureFlag = false;
-      snprintf(buffer, sizeof(buffer), "%.2f°C, %.2f°F, %d MPH, %s", tempC, tempF, windSpeed, directions[direction]);
+    snprintf(buffer, sizeof(buffer), "%d°C, %d°F, %d%%, %d MPH, %s", celsius, fahrenheit, humidity, windSpeed, directions[direction]);
     Serial.println(buffer);
   }
 
