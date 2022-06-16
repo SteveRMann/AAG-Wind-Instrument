@@ -17,6 +17,14 @@ void readWindDirection() {
     float ch_b = ds2450.getVoltage(1);
     float ch_c = ds2450.getVoltage(2);
     float ch_d = ds2450.getVoltage(3);
+
+    //debug
+    //Serial.print(ch_a); Serial.print(", ");
+    //Serial.print(ch_b); Serial.print(", ");
+    //Serial.print(ch_c); Serial.print(", ");
+    //Serial.print(ch_d); Serial.println(", ");
+
+    
     for (int i = 0; i < 16; i++) {
       if (((ch_a < directionTable[i][0] + 1.0) && (ch_a >= directionTable[i][0] - 1.0)) &&
           ((ch_b < directionTable[i][1] + 1.0) && (ch_b >= directionTable[i][1] - 1.0)) &&

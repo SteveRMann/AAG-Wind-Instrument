@@ -178,6 +178,10 @@ void setup() {
   Serial.println(fTopic);
   Serial.print(F("hTopic= "));
   Serial.println(hTopic);
+  Serial.print(F("wTopic= "));
+  Serial.println(wTopic);
+  Serial.print(F("dTopic= "));
+  Serial.println(dTopic);
 
 
   //Start the TickTwo timers
@@ -197,6 +201,9 @@ void setup() {
 
 //======================= loop() ===============================
 void loop() {
+  static byte prevTemperatureC;
+  static byte prevTemperatureF;
+
   timer1.update();
   timer2.update();
   timer3.update();
@@ -227,6 +234,10 @@ void loop() {
 
   if (temperatureFlag) {
     temperatureFlag = false;
+    if (celsius > 199) {              //In case of sensor error, celcius returns 200
+      celsius = prevTemperatureC;
+      fahrenheit = prevTemperatureF;
+    }
     publsh();
     //    Serial.println(buffer);
   }
