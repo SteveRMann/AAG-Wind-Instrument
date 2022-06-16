@@ -15,19 +15,60 @@
 
 */
 
+//The PubSub constructor and HOSTPREFIX MUST be unique on the network.
+#define HOSTPREFIX "WIND"
 
 #include <Arduino.h>
 #include <OneWire.h>
 #include <TickTwo.h>
 
-//Global variables
+//------------------ WiFiMulti declarations ------------------
+#include <ESP8266WiFiMulti.h>
+ESP8266WiFiMulti wifiMulti;
+
+// WiFi credentials Defined in kaywinnet.h
+#include "Kaywinnet.h"
+
+// WiFi connect timeout per AP. Increase when connecting takes longer.
+const uint32_t connectTimeoutMs = 5000;
+
+// setup_wifi vars
+char macBuffer[24];       // Holds the last three digits of the MAC, in hex.
+char hostNamePrefix[] = HOSTPREFIX;
+char hostName[12];        // Holds hostNamePrefix + the last three bytes of the MAC address.
+
+
+// ------------------------- For MQTT -------------------------
+#include <ESP8266WiFi.h>        //Connect (and reconnect) an ESP8266 to the a WiFi network.
+#include <PubSubClient.h>       //connect to a MQTT broker and publish/subscribe messages in topics.
+#include "Kaywinnet.h"
+
+//Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
+//Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
+//The constructor MUST be unique on the network.
+WiFiClient aagClient;
+PubSubClient client(aagClient);
+
+#define NODENAME "windStation"                             //Give this node a name
+const char *cmndTopic = NODENAME "/cmnd";                  //Incoming commands, payload is a command.
+const char *cTopic = NODENAME "/celsius";                  //payload is the temperature in Celsius.
+const char *fTopic = NODENAME "/fahrenheit";               //payload is the temperature in fahrenheit.
+const char *hTopic = NODENAME "/humidity";                 //payload is the humidity in percent.
+const char *wTopic = NODENAME "/speed";                    //payload is the wind speed in MPH.
+const char *dTopic = NODENAME "/direction";                //payload is the wind direction (char array).
+const char *connectName =  NODENAME "1";                   //Must be unique on the network
+const char *mqttServer = MQTT_SERVER;                      //Local broker defined in Kaywinnet.h
+const int mqttPort = MQTT_PORT;
+
+
+// ------------------------- Global variables -------------------------
 byte celsius = 0;
 byte fahrenheit = 0;
 byte humidity = 0;
 
 
 
-//----- Prototypes (Must precede TickTwo timers -----
+//---------------- Prototypes (Must precede TickTwo timers ---------------
 // Must preceed ticker calls.
 void readWindDirection();
 void readWindSpeed();
@@ -123,7 +164,20 @@ void setup() {
   Serial.println(SKETCH);
   ds2423.begin();       //Speed
   ds2450.begin();       //Direction
+  setup_wifiMulti();
 
+  //Call the setServer method on the PubSubClient object, passing as first argument the
+  //address and as second the port.
+  client.setServer(mqttServer, mqttPort);
+  mqttConnect();
+
+  //Show the topics:
+  Serial.print(F("cTopic= "));
+  Serial.println(cTopic);
+  Serial.print(F("fTopic= "));
+  Serial.println(fTopic);
+  Serial.print(F("hTopic= "));
+  Serial.println(hTopic);
 
 
   //Start the TickTwo timers
@@ -147,26 +201,53 @@ void loop() {
   timer2.update();
   timer3.update();
 
+  //Make sure we stay connected to the mqtt broker
+  if (!client.connected()) {
+    mqttConnect();
+  }
+  if (!client.loop()) {
+    client.connect(connectName);
+  }
 
-  char buffer[50];
+
+  //  char buffer[50];
   if (windSpeedFlag) {
     windSpeedFlag = false;
     if (windSpeed < 120) {
-      snprintf(buffer, sizeof(buffer), "%d°C, %d°F, %d%%, %d MPH, %s", celsius, fahrenheit, humidity, windSpeed, directions[direction]);
-      Serial.println(buffer);
+      publsh();
+      //      Serial.println(buffer);
     }
   }
 
   if (windDirectionFlag) {
     windDirectionFlag = false;
-    snprintf(buffer, sizeof(buffer), "%d°C, %d°F, %d%%, %d MPH, %s", celsius, fahrenheit, humidity, windSpeed, directions[direction]);
-    Serial.println(buffer);
+    publsh();
+    //    Serial.println(buffer);
   }
 
   if (temperatureFlag) {
     temperatureFlag = false;
-    snprintf(buffer, sizeof(buffer), "%d°C, %d°F, %d%%, %d MPH, %s", celsius, fahrenheit, humidity, windSpeed, directions[direction]);
-    Serial.println(buffer);
+    publsh();
+    //    Serial.println(buffer);
   }
 
+}
+void publsh() {
+  char bufr[50];
+  itoa(celsius, bufr, 10);
+  client.publish(cTopic, bufr);
+
+  itoa(fahrenheit, bufr, 10);
+  client.publish(fTopic, bufr);
+
+  itoa(humidity, bufr, 10);
+  client.publish(hTopic, bufr);
+
+  itoa(windSpeed, bufr, 10);
+  client.publish(wTopic, bufr);
+
+  client.publish(dTopic, directions[direction]);
+
+  snprintf(bufr, sizeof(bufr), "%d°C, %d°F, %d%%, %d MPH, %s", celsius, fahrenheit, humidity, windSpeed, directions[direction]);
+  Serial.println(bufr);
 }
