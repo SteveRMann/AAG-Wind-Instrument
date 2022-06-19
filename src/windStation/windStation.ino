@@ -13,7 +13,16 @@
      Temperature
      Humidity and temperature are from a DHT11 on D1
 
+     Pyranometer:
+     Reads the pyranometer value on A0 once a second.
+       Connections:
+       --------------
+       White- +5V
+       Green- Signal (A0)
+       Clear- Ground
+
 */
+
 
 //The PubSub constructor and HOSTPREFIX MUST be unique on the network.
 #define HOSTPREFIX "WIND"
@@ -56,6 +65,7 @@ const char *fTopic = NODENAME "/fahrenheit";               //payload is the temp
 const char *hTopic = NODENAME "/humidity";                 //payload is the humidity in percent.
 const char *wTopic = NODENAME "/speed";                    //payload is the wind speed in MPH.
 const char *dTopic = NODENAME "/direction";                //payload is the wind direction (char array).
+const char *pTopic = NODENAME "/pyranometer";              //payload is the pyranometer value.
 const char *connectName =  NODENAME "1";                   //Must be unique on the network
 const char *mqttServer = MQTT_SERVER;                      //Local broker defined in Kaywinnet.h
 const int mqttPort = MQTT_PORT;
@@ -65,6 +75,9 @@ const int mqttPort = MQTT_PORT;
 byte celsius = 0;
 byte fahrenheit = 0;
 byte humidity = 0;
+int pyroPin = A0;       //data pin for the Pyranometer
+int pyroValue = 0;      //value coming from the Pyranometer
+bool pyroFlag = false;  //True when there is a new reading
 
 
 
@@ -73,11 +86,12 @@ byte humidity = 0;
 void readWindDirection();
 void readWindSpeed();
 void readDht11();
+void readPyranometer();
 
 TickTwo timer1(readWindSpeed, 10000);       //Get windspeed every ten seconds
 TickTwo timer2(readWindDirection, 1000);    //Get wind direction every 1 second
-TickTwo timer3(readDht11, 15000);            //Call myTemperature() every 15,000 ms.
-
+TickTwo timer3(readDht11, 15000);           //Call myTemperature() every 15,000 ms.
+TickTwo timer4(readPyranometer, 1000);      //Get pyro value every 1 second
 
 
 //const uint8_t ONE_WIRE_BUS = D4;        // 1-Wire network
@@ -153,7 +167,12 @@ SimpleDHT11 dht11(pinDHT11);
 bool temperatureFlag = false;  //Flag true with new reading
 
 
-
+//--------------------------- Pyranometer ------------------------------------
+void readPyranometer() {
+  // read the value from the pyro:
+  pyroValue = analogRead(pyroPin);
+  pyroFlag = true;
+}
 
 
 //======================= setup() ===============================
@@ -188,6 +207,7 @@ void setup() {
   timer1.start();
   timer2.start();
   timer3.start();
+  timer4.start();
 
   //Get initial values
   readWindSpeed();
@@ -207,6 +227,7 @@ void loop() {
   timer1.update();
   timer2.update();
   timer3.update();
+  timer4.update();
 
   //Make sure we stay connected to the mqtt broker
   if (!client.connected()) {
@@ -242,6 +263,13 @@ void loop() {
     //    Serial.println(buffer);
   }
 
+  if (pyroFlag) {
+    pyroFlag = false;
+    publsh();
+    //Serial.println(pyroValue);
+  }
+
+
 }
 void publsh() {
   char bufr[50];
@@ -259,6 +287,11 @@ void publsh() {
 
   client.publish(dTopic, directions[direction]);
 
-  snprintf(bufr, sizeof(bufr), "%d°C, %d°F, %d%%, %d MPH, %s", celsius, fahrenheit, humidity, windSpeed, directions[direction]);
+  itoa(pyroValue, bufr, 10);
+  client.publish(pTopic, bufr);   //Watts per square meter (W/m^2)
+
+
+  //Print
+  snprintf(bufr, sizeof(bufr), "%d°C, %d°F, %d%%, %d MPH, %s, %dW/m^2", celsius, fahrenheit, humidity, windSpeed, directions[direction], pyroValue);
   Serial.println(bufr);
 }
