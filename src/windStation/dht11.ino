@@ -15,7 +15,6 @@
 */
 
 
-
 void readDht11() {
   // Returns globals:
   //byte celsius
@@ -23,29 +22,12 @@ void readDht11() {
   //byte humidity
 
   int err = SimpleDHTErrSuccess;
-
   if ((err = dht11.read(&celsius, &humidity, NULL)) != SimpleDHTErrSuccess) {
-    //Serial.print("Read DHT11 failed, err=");
-    //Serial.print(SimpleDHTErrCode(err));
-    //Serial.print(","); Serial.println(SimpleDHTErrDuration(err));
-    //delay(1000);
-    celsius = 200;    //signifies an error
-    fahrenheit = 200;
+    // In case of error, do nothing.
     return;
   }
 
   fahrenheit = (celsius * 9) / 5 + 32;
-
-  /*
-    Serial.println(F("---- readDht() ----"));
-    Serial.print((int)celsius);
-    Serial.print("°C, ");
-    Serial.print(fahrenheit);
-    Serial.print("°F, ");
-    Serial.print((int)humidity);
-    Serial.println("%");
-  */
-
   temperatureFlag = true;
   return;
 }

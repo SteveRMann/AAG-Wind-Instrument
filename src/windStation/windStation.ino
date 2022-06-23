@@ -91,7 +91,7 @@ void readPyranometer();
 TickTwo timer1(readWindSpeed, 10000);       //Get windspeed every ten seconds
 TickTwo timer2(readWindDirection, 1000);    //Get wind direction every 1 second
 TickTwo timer3(readDht11, 15000);           //Call myTemperature() every 15,000 ms.
-TickTwo timer4(readPyranometer, 1000);      //Get pyro value every 1 second
+TickTwo timer4(readPyranometer, 30000);     //Get pyro value every 30 seconds
 
 
 //const uint8_t ONE_WIRE_BUS = D4;        // 1-Wire network
@@ -221,9 +221,6 @@ void setup() {
 
 //======================= loop() ===============================
 void loop() {
-  static byte prevTemperatureC;
-  static byte prevTemperatureF;
-
   timer1.update();
   timer2.update();
   timer3.update();
@@ -243,36 +240,32 @@ void loop() {
     windSpeedFlag = false;
     if (windSpeed < 120) {
       publsh();
-      //      Serial.println(buffer);
     }
   }
 
   if (windDirectionFlag) {
     windDirectionFlag = false;
     publsh();
-    //    Serial.println(buffer);
   }
 
   if (temperatureFlag) {
     temperatureFlag = false;
-    if (celsius > 199) {              //In case of sensor error, celcius returns 200
-      celsius = prevTemperatureC;
-      fahrenheit = prevTemperatureF;
-    }
     publsh();
-    //    Serial.println(buffer);
   }
 
   if (pyroFlag) {
     pyroFlag = false;
     publsh();
-    //Serial.println(pyroValue);
   }
 
 
 }
 void publsh() {
   char bufr[50];
+
+  //    if (celsius < 200) {        //In case of sensor error, celcius returns 200
+
+
   itoa(celsius, bufr, 10);
   client.publish(cTopic, bufr);
 
