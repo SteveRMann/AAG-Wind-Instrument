@@ -11,7 +11,7 @@
      Wind Speed and Wind Direction data is on a one-wire bus (D4).
 
      Temperature
-     Humidity and temperature are from a DHT11 on D1
+     Humidity and temperature are from a DHT22 on D1
 
      Pyranometer:
      Reads the pyranometer value on A0 once a second.
@@ -85,12 +85,12 @@ bool pyroFlag = false;  //True when there is a new reading
 // Must preceed ticker calls.
 void readWindDirection();
 void readWindSpeed();
-void readDht11();
+void readDht22();
 void readPyranometer();
 
 TickTwo timer1(readWindSpeed, 10000);       //Get windspeed every ten seconds
 TickTwo timer2(readWindDirection, 1000);    //Get wind direction every 1 second
-TickTwo timer3(readDht11, 15000);           //Call myTemperature() every 15,000 ms.
+TickTwo timer3(readDht22, 15000);           //Call myTemperature() every 15,000 ms.
 TickTwo timer4(readPyranometer, 30000);     //Get pyro value every 30 seconds
 
 
@@ -162,8 +162,8 @@ DS2450 ds2450(&ow, DS2450_address);
 
 //--------------------------- Temperature ------------------------------------
 #include <SimpleDHT.h>
-int pinDHT11 = D1;
-SimpleDHT11 dht11(pinDHT11);
+int pinDHT22 = D1;
+SimpleDHT22 dht22(pinDHT22);
 bool temperatureFlag = false;  //Flag true with new reading
 
 
@@ -212,7 +212,7 @@ void setup() {
   //Get initial values
   readWindSpeed();
   readWindDirection();
-  readDht11();          //Temperature and humidity
+  readDht22();          //Temperature and humidity
 
 }
 

@@ -1,11 +1,11 @@
 /*
    dht.ino
-   Function to read the temperature and humidity from a DHT11
+   Function to read the temperature and humidity from a DHT22
 
    In the top of the main program:
    #include <SimpleDHT.h>
-   int pinDHT11 = D1;
-   SimpleDHT11 dht11(pinDHT11);
+   int pinDHT22 = D1;
+   SimpleDHT22 dht22(pinDHT22);
 
    Global variables (until I figure out how to return two values)
    byte celsius = 0;
@@ -15,14 +15,14 @@
 */
 
 
-void readDht11() {
+void readDht22() {
   // Returns globals:
   //byte celsius
   //byte fahrenheit
   //byte humidity
 
   int err = SimpleDHTErrSuccess;
-  if ((err = dht11.read(&celsius, &humidity, NULL)) != SimpleDHTErrSuccess) {
+  if ((err = dht22.read(&celsius, &humidity, NULL)) != SimpleDHTErrSuccess) {
     // In case of error, do nothing.
     return;
   }
