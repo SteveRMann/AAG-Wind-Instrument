@@ -3611,27 +3611,29 @@ by exp-lbrs.ulp</description>
 <part name="W1" library="diy-modules" deviceset="WEMOS-D1-MINI" device=""/>
 <part name="R1" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="R-US_" device="0207/10" package3d_urn="urn:adsk.eagle:package:6240597/1" value="100K"/>
 <part name="MGT1" library="BeagleBone_Black_Wireless" library_urn="urn:adsk.eagle:library:6644236" deviceset="BEAGLEBONEBLACK_MOUNTING_HOLE" device="" package3d_urn="urn:adsk.eagle:package:6644362/2"/>
-<part name="JP1" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="PINHD-1X3" device="" package3d_urn="urn:adsk.eagle:package:6240710/1" value="Pyranometer"/>
+<part name="JP1" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="PINHD-1X3" device="" package3d_urn="urn:adsk.eagle:package:6240710/1" value="Pyro"/>
 <part name="R2" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="R-US_" device="0207/10" package3d_urn="urn:adsk.eagle:package:6240597/1" value="200K"/>
 <part name="X_2" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="P+1" library="audio amplifier example" library_urn="urn:adsk.eagle:library:970892" deviceset="VCC" device=""/>
 <part name="P+2" library="audio amplifier example" library_urn="urn:adsk.eagle:library:970892" deviceset="VCC" device=""/>
-<part name="JP2" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
+<part name="WIND" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
 <part name="X_4" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="R3" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="R-US_" device="0207/10" package3d_urn="urn:adsk.eagle:package:6240597/1" value="4.7K"/>
-<part name="JP3" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="PINHD-1X3" device="" package3d_urn="urn:adsk.eagle:package:6240710/1" value="DHT"/>
+<part name="DHT" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="PINHD-1X3" device="" package3d_urn="urn:adsk.eagle:package:6240710/1" value="DHT"/>
 <part name="X_5" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="P+3" library="audio amplifier example" library_urn="urn:adsk.eagle:library:970892" deviceset="VCC" device=""/>
 <part name="X_1" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
 <part name="X_6" library="ngspice-simulation" library_urn="urn:adsk.eagle:library:527439" deviceset="GND" device=""/>
+<part name="MGT2" library="BeagleBone_Black_Wireless" library_urn="urn:adsk.eagle:library:6644236" deviceset="BEAGLEBONEBLACK_MOUNTING_HOLE" device="" package3d_urn="urn:adsk.eagle:package:6644362/2"/>
+<part name="PWR" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 <rectangle x1="53.34" y1="73.66" x2="63.5" y2="78.74" layer="101"/>
 <text x="88.9" y="129.54" size="1.778" layer="95">+5V</text>
-<text x="170.18" y="129.54" size="1.778" layer="95">+5V</text>
-<text x="185.42" y="129.54" size="1.778" layer="95">+5V</text>
+<text x="182.88" y="129.54" size="1.778" layer="95">+5V</text>
+<text x="198.12" y="129.54" size="1.778" layer="95">+5V</text>
 </plain>
 <instances>
 <instance part="X_3" gate="G$1" x="91.44" y="60.96" smashed="yes"/>
@@ -3663,27 +3665,34 @@ by exp-lbrs.ulp</description>
 <instance part="P+1" gate="VCC" x="91.44" y="127" smashed="yes">
 <attribute name="VALUE" x="89.916" y="128.016" size="1.27" layer="96" display="off"/>
 </instance>
-<instance part="P+2" gate="VCC" x="172.72" y="127" smashed="yes">
-<attribute name="VALUE" x="171.196" y="128.016" size="1.27" layer="96" display="off"/>
+<instance part="P+2" gate="VCC" x="185.42" y="127" smashed="yes">
+<attribute name="VALUE" x="183.896" y="128.016" size="1.27" layer="96" display="off"/>
 </instance>
-<instance part="JP2" gate="G$1" x="172.72" y="66.04" smashed="yes">
-<attribute name="NAME" x="166.37" y="71.755" size="1.778" layer="95"/>
-<attribute name="VALUE" x="166.37" y="60.96" size="1.778" layer="96"/>
+<instance part="WIND" gate="G$1" x="185.42" y="66.04" smashed="yes">
+<attribute name="NAME" x="179.07" y="71.755" size="1.778" layer="95"/>
+<attribute name="VALUE" x="179.07" y="60.96" size="1.778" layer="96"/>
 </instance>
-<instance part="X_4" gate="G$1" x="160.02" y="60.96" smashed="yes"/>
-<instance part="R3" gate="G$1" x="166.37" y="91.44" smashed="yes" rot="R180">
-<attribute name="NAME" x="170.18" y="95.0214" size="1.778" layer="95" rot="R180"/>
-<attribute name="VALUE" x="165.1" y="94.742" size="1.778" layer="96" rot="R180"/>
+<instance part="X_4" gate="G$1" x="172.72" y="60.96" smashed="yes"/>
+<instance part="R3" gate="G$1" x="179.07" y="91.44" smashed="yes" rot="R180">
+<attribute name="NAME" x="182.88" y="95.0214" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="177.8" y="94.742" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="JP3" gate="A" x="198.12" y="99.06" smashed="yes">
-<attribute name="VALUE" x="191.77" y="91.44" size="1.778" layer="96"/>
+<instance part="DHT" gate="A" x="210.82" y="99.06" smashed="yes">
+<attribute name="VALUE" x="204.47" y="91.44" size="1.778" layer="96"/>
 </instance>
-<instance part="X_5" gate="G$1" x="187.96" y="60.96" smashed="yes"/>
-<instance part="P+3" gate="VCC" x="187.96" y="127" smashed="yes">
-<attribute name="VALUE" x="186.436" y="128.016" size="1.27" layer="96" display="off"/>
+<instance part="X_5" gate="G$1" x="200.66" y="60.96" smashed="yes"/>
+<instance part="P+3" gate="VCC" x="200.66" y="127" smashed="yes">
+<attribute name="VALUE" x="199.136" y="128.016" size="1.27" layer="96" display="off"/>
 </instance>
 <instance part="X_1" gate="G$1" x="63.5" y="60.96" smashed="yes"/>
-<instance part="X_6" gate="G$1" x="152.4" y="60.96" smashed="yes"/>
+<instance part="X_6" gate="G$1" x="165.1" y="60.96" smashed="yes"/>
+<instance part="MGT2" gate="G$1" x="55.88" y="68.58" smashed="yes">
+<attribute name="NAME" x="56.642" y="66.548" size="1.27" layer="95"/>
+</instance>
+<instance part="PWR" gate="G$1" x="144.78" y="66.04" smashed="yes" rot="R180">
+<attribute name="NAME" x="151.13" y="60.325" size="1.778" layer="95" rot="R180"/>
+<attribute name="VALUE" x="151.13" y="71.12" size="1.778" layer="96" rot="R180"/>
+</instance>
 </instances>
 <busses>
 </busses>
@@ -3720,27 +3729,34 @@ by exp-lbrs.ulp</description>
 <wire x1="78.74" y1="111.76" x2="78.74" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="JP2" gate="G$1" pin="2"/>
-<wire x1="170.18" y1="66.04" x2="160.02" y2="66.04" width="0.1524" layer="91"/>
+<pinref part="WIND" gate="G$1" pin="2"/>
+<wire x1="182.88" y1="66.04" x2="172.72" y2="66.04" width="0.1524" layer="91"/>
 <pinref part="X_4" gate="G$1" pin="0"/>
-<wire x1="160.02" y1="66.04" x2="160.02" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="172.72" y1="66.04" x2="172.72" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="JP3" gate="A" pin="3"/>
-<wire x1="195.58" y1="96.52" x2="187.96" y2="96.52" width="0.1524" layer="91"/>
+<pinref part="DHT" gate="A" pin="3"/>
+<wire x1="208.28" y1="96.52" x2="200.66" y2="96.52" width="0.1524" layer="91"/>
 <pinref part="X_5" gate="G$1" pin="0"/>
-<wire x1="187.96" y1="96.52" x2="187.96" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="200.66" y1="96.52" x2="200.66" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="MGT1" gate="G$1" pin="P$1"/>
 <pinref part="X_1" gate="G$1" pin="0"/>
 <wire x1="63.5" y1="63.5" x2="63.5" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="MGT2" gate="G$1" pin="P$1"/>
+<wire x1="55.88" y1="63.5" x2="63.5" y2="63.5" width="0.1524" layer="91"/>
+<junction x="63.5" y="63.5"/>
 </segment>
 <segment>
 <pinref part="X_6" gate="G$1" pin="0"/>
-<wire x1="152.4" y1="60.96" x2="152.4" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="60.96" x2="165.1" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="W1" gate="G$1" pin="GND"/>
-<wire x1="152.4" y1="88.9" x2="149.86" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="63.5" x2="165.1" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="165.1" y1="88.9" x2="149.86" y2="88.9" width="0.1524" layer="91"/>
+<pinref part="PWR" gate="G$1" pin="1"/>
+<wire x1="147.32" y1="63.5" x2="165.1" y2="63.5" width="0.1524" layer="91"/>
+<junction x="165.1" y="63.5"/>
 </segment>
 </net>
 <net name="VCC" class="0">
@@ -3753,37 +3769,42 @@ by exp-lbrs.ulp</description>
 <segment>
 <pinref part="P+2" gate="VCC" pin="VCC"/>
 <pinref part="W1" gate="G$1" pin="5V"/>
-<wire x1="149.86" y1="86.36" x2="172.72" y2="86.36" width="0.1524" layer="91"/>
-<wire x1="172.72" y1="86.36" x2="172.72" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="172.72" y1="91.44" x2="172.72" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="149.86" y1="86.36" x2="154.94" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="154.94" y1="86.36" x2="185.42" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="185.42" y1="86.36" x2="185.42" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="185.42" y1="91.44" x2="185.42" y2="124.46" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="1"/>
-<wire x1="171.45" y1="91.44" x2="172.72" y2="91.44" width="0.1524" layer="91"/>
-<junction x="172.72" y="91.44"/>
+<wire x1="184.15" y1="91.44" x2="185.42" y2="91.44" width="0.1524" layer="91"/>
+<junction x="185.42" y="91.44"/>
+<pinref part="PWR" gate="G$1" pin="2"/>
+<wire x1="147.32" y1="66.04" x2="154.94" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="154.94" y1="66.04" x2="154.94" y2="86.36" width="0.1524" layer="91"/>
+<junction x="154.94" y="86.36"/>
 </segment>
 <segment>
-<pinref part="JP3" gate="A" pin="1"/>
-<wire x1="195.58" y1="101.6" x2="187.96" y2="101.6" width="0.1524" layer="91"/>
+<pinref part="DHT" gate="A" pin="1"/>
+<wire x1="208.28" y1="101.6" x2="200.66" y2="101.6" width="0.1524" layer="91"/>
 <pinref part="P+3" gate="VCC" pin="VCC"/>
-<wire x1="187.96" y1="101.6" x2="187.96" y2="124.46" width="0.1524" layer="91"/>
+<wire x1="200.66" y1="101.6" x2="200.66" y2="124.46" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$3" class="0">
 <segment>
 <pinref part="W1" gate="G$1" pin="D4"/>
-<wire x1="149.86" y1="91.44" x2="160.02" y2="91.44" width="0.1524" layer="91"/>
-<pinref part="JP2" gate="G$1" pin="1"/>
-<wire x1="160.02" y1="91.44" x2="160.02" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="160.02" y1="68.58" x2="170.18" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="149.86" y1="91.44" x2="172.72" y2="91.44" width="0.1524" layer="91"/>
+<pinref part="WIND" gate="G$1" pin="1"/>
+<wire x1="172.72" y1="91.44" x2="172.72" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="172.72" y1="68.58" x2="182.88" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="2"/>
-<wire x1="161.29" y1="91.44" x2="160.02" y2="91.44" width="0.1524" layer="91"/>
-<junction x="160.02" y="91.44"/>
+<wire x1="173.99" y1="91.44" x2="172.72" y2="91.44" width="0.1524" layer="91"/>
+<junction x="172.72" y="91.44"/>
 </segment>
 </net>
 <net name="N$4" class="0">
 <segment>
 <pinref part="W1" gate="G$1" pin="D1"/>
-<pinref part="JP3" gate="A" pin="2"/>
-<wire x1="149.86" y1="99.06" x2="195.58" y2="99.06" width="0.1524" layer="91"/>
+<pinref part="DHT" gate="A" pin="2"/>
+<wire x1="149.86" y1="99.06" x2="208.28" y2="99.06" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
@@ -3794,7 +3815,7 @@ by exp-lbrs.ulp</description>
 <approved hash="104,1,149.86,88.9,W1,GND,0,,,"/>
 <approved hash="104,1,149.86,86.36,W1,5V,VCC,,,"/>
 <approved hash="113,1,124.356,92.606,FRAME1,,,,,"/>
-<approved hash="113,1,170.417,68.8061,JP2,,,,,"/>
+<approved hash="113,1,170.417,68.8061,WIND,,,,,"/>
 </errors>
 </schematic>
 </drawing>
