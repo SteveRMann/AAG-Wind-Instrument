@@ -60,12 +60,12 @@ PubSubClient client(aagClient);
 
 #define NODENAME "windStation"                             //Give this node a name
 const char *cmndTopic = NODENAME "/cmnd";                  //Incoming commands, payload is a command.
-const char *cTopic = NODENAME "/celsius";                  //payload is the temperature in Celsius.
-const char *fTopic = NODENAME "/fahrenheit";               //payload is the temperature in fahrenheit.
-const char *hTopic = NODENAME "/humidity";                 //payload is the humidity in percent.
-const char *wTopic = NODENAME "/speed";                    //payload is the wind speed in MPH.
-const char *dTopic = NODENAME "/direction";                //payload is the wind direction (char array).
-const char *pTopic = NODENAME "/pyranometer";              //payload is the pyranometer value.
+const char *celciusTopic = NODENAME "/celsius";                  //payload is the temperature in Celsius.
+const char *fahrenheitTopic = NODENAME "/fahrenheit";               //payload is the temperature in fahrenheit.
+const char *humidityTopic = NODENAME "/humidity";                 //payload is the humidity in percent.
+const char *windSpeedTopic = NODENAME "/speed";                    //payload is the wind speed in MPH.
+const char *windDirectionTopic = NODENAME "/direction";                //payload is the wind direction (char array).
+const char *pyroTopic = NODENAME "/pyranometer";              //payload is the pyranometer value.
 const char *connectName =  NODENAME "1";                   //Must be unique on the network
 const char *mqttServer = MQTT_SERVER;                      //Local broker defined in Kaywinnet.h
 const int mqttPort = MQTT_PORT;
@@ -191,16 +191,18 @@ void setup() {
   mqttConnect();
 
   //Show the topics:
-  Serial.print(F("cTopic= "));
-  Serial.println(cTopic);
-  Serial.print(F("fTopic= "));
-  Serial.println(fTopic);
-  Serial.print(F("hTopic= "));
-  Serial.println(hTopic);
-  Serial.print(F("wTopic= "));
-  Serial.println(wTopic);
-  Serial.print(F("dTopic= "));
-  Serial.println(dTopic);
+  Serial.print(F("celciusTopic= "));
+  Serial.println(celciusTopic);
+  Serial.print(F("fahrenheitTopic= "));
+  Serial.println(fahrenheitTopic);
+  Serial.print(F("humidityTopic= "));
+  Serial.println(humidityTopic);
+  Serial.print(F("windSpeedTopic= "));
+  Serial.println(windSpeedTopic);
+  Serial.print(F("windDirectionTopic= "));
+  Serial.println(windDirectionTopic);
+  Serial.print(F("pyroTopic= "));
+  Serial.println(pyroTopic);
 
 
   //Start the TickTwo timers
@@ -267,21 +269,21 @@ void publsh() {
 
 
   itoa(celsius, bufr, 10);
-  client.publish(cTopic, bufr);
+  client.publish(celciusTopic, bufr);
 
   itoa(fahrenheit, bufr, 10);
-  client.publish(fTopic, bufr);
+  client.publish(fahrenheitTopic, bufr);
 
   itoa(humidity, bufr, 10);
-  client.publish(hTopic, bufr);
+  client.publish(humidityTopic, bufr);
 
   itoa(windSpeed, bufr, 10);
-  client.publish(wTopic, bufr);
+  client.publish(windSpeedTopic, bufr);
 
-  client.publish(dTopic, directions[direction]);
+  client.publish(windDirectionTopic, directions[direction]);
 
   itoa(pyroValue, bufr, 10);
-  client.publish(pTopic, bufr);   //Watts per square meter (W/m^2)
+  client.publish(pyroTopic, bufr);   //Watts per square meter (W/m^2)
 
 
   //Print

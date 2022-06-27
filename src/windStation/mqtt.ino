@@ -55,7 +55,7 @@
   Or to send an integer:
   char bufr[4];
   itoa(celcius, bufr, 10);
-  client.publish(cTopic, bufr);
+  client.publish(celciusTopic, bufr);
 
 */
 
