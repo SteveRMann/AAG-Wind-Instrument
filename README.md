@@ -42,3 +42,31 @@ Thus, the ADC "sees" a high, or low, or "medium" voltage.
 ### Wind Speed
 Two magnets mounted on a second rotor attached to the wind cups axle operate a reed switch connected to the DS2423 (4kbit 1-Wire RAM with Counter) which provides a unique identification for this sensor with its 1-Wire serial number. One magnet is mounted in each of the two outermost holes of the rotor. This provides two counts per revolution which improves response at low wind speeds. It also provides rotational balance to the rotor, which becomes important with increasing wind speed, as the rotor can reach 2400 rpm in 160 km/h winds. The DS2423 keeps track of the total number of revolutions the wind cups make and provides the data to the bus master on demand. The chip contains two 232 bit counters and can be powered for ten years with a small Lithium battery, however, here power for the counter chip comes from D1, D2 and C1,  which form a half wave rectifier that “steals” power from the data line. The DS2423 can only be reset to zero when this “parasite power” is lost. Wind speed is calculated by the program taking the difference between two counts of the counter used. One count generated before and the other after a clocked interval. The output is currently given in rpm. This later needs to be converted to m/s or km/h.
 
+# Home Assistant
+##Interfacing with Home Assistant
+Home Assistant sees the Windstation over MQTT.
+In 'mqtt.yaml':
+ sensor:
+    - name: "Windstation Temperature C"
+      state_topic: "windStation/celsius"
+      unit_of_measurement: "°C"
+            
+    - name: "Windstation Temperature F"
+      state_topic: "windStation/fahrenheit"
+      unit_of_measurement: "°F"
+            
+    - name: "Windstation Humidity"
+      state_topic: "windStation/humidity"
+      unit_of_measurement: "%"      
+      
+    - name: "Windstation Windspeed"
+      state_topic: "windStation/speed"
+      unit_of_measurement: "MPH"      
+      
+    - name: "Windstation Wind Direction"
+      state_topic: "windStation/direction"
+            
+    - name: "Windstation Pyranometer"
+      state_topic: "windStation/pyranometer"
+      unit_of_measurement: "W/m^2"     
+
