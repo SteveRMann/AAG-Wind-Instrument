@@ -47,6 +47,8 @@ Two magnets mounted on a second rotor attached to the wind cups axle operate a r
 
 Home Assistant sees the Windstation over MQTT.
 In 'mqtt.yaml':
+
+```
  sensor:
     - name: "Windstation Temperature C"
       state_topic: "windStation/celsius"
@@ -70,4 +72,4 @@ In 'mqtt.yaml':
     - name: "Windstation Pyranometer"
       state_topic: "windStation/pyranometer"
       unit_of_measurement: "W/m^2"     
-
+```
